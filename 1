@@ -1,0 +1,548 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBSE कक्षा 9 - सूचना एवं संचार प्रौद्योगिकी (अध्याय 1) ऑनलाइन परीक्षा</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --bg: #f4f6f9;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .header h2 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .teacher-btn-top {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #f8f9fa;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .card {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+        }
+
+        .question-item {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid var(--secondary);
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .question-title {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        .options label:hover {
+            background: #eef7fc;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 12px;
+        }
+
+        .result-box {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            background: #eef9f1;
+            border: 2px solid var(--success);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .lock-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: #fdf2f2;
+            border: 2px solid var(--danger);
+            border-radius: 8px;
+        }
+
+        .teacher-panel {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff8e7;
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+        }
+
+        .teacher-panel table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #fff;
+        }
+
+        .teacher-panel th, .teacher-panel td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .teacher-panel th {
+            background: #f4f4f4;
+        }
+
+        .status-correct {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .status-incorrect {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .answer-key {
+            display: none;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            background: #f0f4f8;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="teacher-btn-top" onclick="openTeacherLogin()">शिक्षक पोर्टल (Teacher Access)</button>
+        <h1>RBSE कक्षा 9 - सूचना एवं संचार प्रौद्योगिकी</h1>
+        <h2>अध्याय 1: कम्प्यूटर का परिचय (50 महत्वपूर्ण वस्तुनिष्ठ प्रश्न)</h2>
+    </div>
+
+    <!-- 1. स्टूडेंट पंजीकरण फॉर्म -->
+    <div id="studentFormCard" class="card">
+        <h3>परीक्षार्थी का विवरण (Student Registration)</h3>
+        <p style="color: #666; font-size: 0.9rem;">कृपया अपनी सही Student ID और नाम दर्ज करें। परीक्षा केवल एक ही बार दी जा सकती है।</p>
+        <div class="form-group">
+            <label for="studentId">Student ID / Roll No.:</label>
+            <input type="text" id="studentId" placeholder="उदा. STU901" required>
+        </div>
+        <div class="form-group">
+            <label for="studentName">विद्यार्थी का नाम (Student Name):</label>
+            <input type="text" id="studentName" placeholder="अपना पूरा नाम लिखें" required>
+        </div>
+        <button class="btn" onclick="startTest()">परीक्षा प्रारंभ करें</button>
+    </div>
+
+    <!-- 2. री-अटैम्प्ट रोकने हेतु ब्लॉक बॉक्स -->
+    <div id="lockCard" class="lock-box">
+        <h2 style="color: var(--danger);">परीक्षा पूर्व में जमा की जा चुकी है!</h2>
+        <p id="lockMessage">आप इस डिवाइस से पहले ही उत्तर जमा कर चुके हैं। पुनः परीक्षा देने की अनुमति नहीं है।</p>
+        <p style="font-weight: bold; margin-top: 15px;">अधिक जानकारी या री-सेट हेतु अपने शिक्षक से संपर्क करें।</p>
+    </div>
+
+    <!-- 3. प्रश्न पत्र कंटेनर -->
+    <div id="quizSection" class="hidden">
+        <div class="card" style="background: #e3f2fd; border-color: #bbdefb;">
+            <strong>परीक्षार्थी:</strong> <span id="displayStudentName"></span> | 
+            <strong>Student ID:</strong> <span id="displayStudentId"></span>
+        </div>
+
+        <form id="quizForm">
+            <div id="questionsContainer"></div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="button" class="btn btn-success" onclick="submitQuiz()">उत्तर जमा करें (Submit Test)</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 4. सबमिशन के बाद मैसेज -->
+    <div id="resultCard" class="result-box">
+        <h2>आपकी परीक्षा सफलतापूर्वक जमा हो गई है!</h2>
+        <p style="font-size: 1.1rem; color: #555;">आपके उत्तर सुरक्षित कर लिए गए हैं। अंकों का मूल्यांकन और सही उत्तर केवल शिक्षक द्वारा जारी किए जाएंगे।</p>
+    </div>
+
+    <!-- 5. शिक्षक पोर्टल (पासवर्ड से सुरक्षित) -->
+    <div id="teacherPanel" class="teacher-panel">
+        <h3>शिक्षक पोर्टल (Teacher Dashboard)</h3>
+        <p><strong>शिक्षक पिन:</strong> 1234 (डिफ़ॉल्ट)</p>
+        
+        <div style="margin-bottom: 15px;">
+            <button class="btn btn-warning" onclick="toggleAnswerKeys()">उत्तर कुंजी दिखाएँ/छिपाएँ (Show/Hide Answer Keys)</button>
+            <button class="btn btn-danger" onclick="clearAllData()">समस्त छात्र डेटा एवं लॉक रिसेट करें (Reset All)</button>
+            <button class="btn" onclick="closeTeacherPanel()" style="background:#7f8c8d;">पोर्टल बंद करें</button>
+        </div>
+
+        <h4>जमा किए गए टेस्ट का रिकॉर्ड (Submissions Record):</h4>
+        <div style="overflow-x: auto;">
+            <table id="submissionsTable">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>नाम</th>
+                        <th>कुल प्राप्तांक (Score)</th>
+                        <th>प्रतिशत (%)</th>
+                        <th>समय</th>
+                    </tr>
+                </thead>
+                <tbody id="submissionsTableBody">
+                    <tr><td colspan="5" style="text-align:center;">कोई डेटा उपलब्ध नहीं है।</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 50 महत्वपूर्ण प्रश्न (RBSE कक्षा 9 ICT - अध्याय 1)
+    const questionsData = [
+        { q: "कम्प्यूटर शब्द की उत्पत्ति किस लैटिन शब्द से हुई है?", options: ["Computer", "Computare", "Compute", "Computo"], ans: 1 },
+        { q: "कम्प्यूटर का मुख्य कार्य क्या है?", options: ["डेटा को इनपुट करना", "डेटा का प्रोसेस करना", "सूचना आउटपुट देना", "उपर्युक्त सभी"], ans: 3 },
+        { q: "आधुनिक कम्प्यूटर के जनक किसे माना जाता है?", options: ["ब्लेज पास्कल", "चार्ल्स बैबेज", "जॉन वॉन न्यूमैन", "एलन ट्यूरिंग"], ans: 1 },
+        { q: "विश्व के प्रथम इलेक्ट्रॉनिक डिजिटल कम्प्यूटर का क्या नाम था?", options: ["ENIAC", "EDVAC", "UNIVAC", "MARK-I"], ans: 0 },
+        { q: "प्रथम पीढ़ी के कम्प्यूटरों में मुख्य इलेक्ट्रॉनिक घटक कौन सा था?", options: ["ट्रांजिस्टर", "वैक्यूम ट्यूब (निर्वात नली)", "एकीकृत परिपथ (IC)", "माइक्रोप्रोसेसर"], ans: 1 },
+        { q: "द्वितीय पीढ़ी के कम्प्यूटरों में किसका उपयोग किया गया था?", options: ["वैक्यूम ट्यूब", "ट्रांजिस्टर", "IC", "VLSI"], ans: 1 },
+        { q: "तृतीय पीढ़ी के कम्प्यूटरों में किसका प्रयोग प्रारंभ हुआ?", options: ["ट्रांजिस्टर", "वैक्यूम ट्यूब", "एकीकृत परिपथ (IC)", "माइक्रोप्रोसेसर"], ans: 2 },
+        { q: "चतुर्थ पीढ़ी के कम्प्यूटरों का मुख्य घटक क्या है?", options: ["IC", "ट्रांजिस्टर", "माइक्रोप्रोसेसर (VLSI/ULSI)", "वैक्यूम ट्यूब"], ans: 2 },
+        { q: "भारत में निर्मित प्रथम सुपर कम्प्यूटर का क्या नाम है?", options: ["अग्नि", "परम 8000 (PARAM 8000)", "आर्यभट्ट", "पृथ्वी"], ans: 1 },
+        { q: "कम्प्यूटर की बुद्धिमत्ता (IQ) का स्तर होता है?", options: ["100", "50", "असीमित", "शून्य (Zero)"], ans: 3 },
+        { q: "कम्प्यूटर की गति को मुख्य रूप से किसमें मापा जाता है?", options: ["मीटर", "हर्ट्ज़ (Hz/GHz)", "लीटर", "ग्राम"], ans: 1 },
+        { q: "निम्न में से कौन सी कम्प्यूटर की एक सीमा (Limitation) है?", options: ["सटीकता", "तीव्र गति", "विचारहीनता (No IQ)", "भंडारण क्षमता"], ans: 2 },
+        { q: "डेटा संसाधन (Data Processing) के पश्चात प्राप्त परिणाम को क्या कहते हैं?", options: ["डेटा", "सूचना (Information)", "इनपुट", "रॉ फैक्ट्स"], ans: 1 },
+        { q: "कम्प्यूटर सिस्टम के भौतिक भागों जिन्हें हम छू सकते हैं, कहलाते हैं?", options: ["सॉफ्टवेयर", "हार्डवेयर", "ह्यूमनवेयर", "फर्मवेयर"], ans: 1 },
+        { q: "निम्न में से कौन सा इनपुट डिवाइस का उदाहरण है?", options: ["मॉनिटर", "प्रिंटर", "कीबोर्ड", "स्पीकर"], ans: 2 },
+        { q: "कम्प्यूटर का 'मस्तिष्क' (Brain of Computer) किसे कहा जाता है?", options: ["RAM", "ROM", "CPU", "Hard Disk"], ans: 2 },
+        { q: "CPU का पूरा नाम क्या है?", options: ["Central Processing Unit", "Central Power Unit", "Computer Processing Unit", "Control Processing Unit"], ans: 0 },
+        { q: "ALU का पूर्ण रूप क्या है?", options: ["Arithmetic Logic Unit", "Array Logic Unit", "Application Logic Unit", "Automated Logic Unit"], ans: 0 },
+        { q: "कम्प्यूटर में गणनाएँ एवं तुलना करने का कार्य कौन सा भाग करता है?", options: ["CU", "ALU", "MU", "Input Unit"], ans: 1 },
+        { q: "नियंत्रण इकाई (Control Unit - CU) का मुख्य कार्य क्या है?", options: ["गणित करना", "समस्त घटकों के कार्यों का नियंत्रण एवं समन्वय करना", "डेटा प्रिंट करना", "स्क्रीन पर दिखाना"], ans: 1 },
+        { q: "निम्न में से कौन सा एक आउटपुट डिवाइस है?", options: ["माउस", "स्कैनर", "मॉनिटर", "जॉयस्टिक"], ans: 2 },
+        { q: "प्राथमिक मेमोरी (Primary Memory) का उदाहरण है?", options: ["हार्ड डिस्क", "RAM एवं ROM", "पेन ड्राइव", "CD/DVD"], ans: 1 },
+        { q: "RAM का पूरा नाम क्या है?", options: ["Read Access Memory", "Random Access Memory", "Rapid Access Memory", "Run Access Memory"], ans: 1 },
+        { q: "ROM का पूरा नाम क्या है?", options: ["Read Only Memory", "Random Only Memory", "Run Only Memory", "Read One Memory"], ans: 0 },
+        { q: "कौन सी मेमोरी अस्थाई (Volatile) होती है, अर्थात बिजली बंद होने पर डेटा नष्ट हो जाता है?", options: ["ROM", "RAM", "हार्ड डिस्क", "पेन ड्राइव"], ans: 1 },
+        { q: "स्थाई (Non-Volatile) मेमोरी का उदाहरण है?", options: ["RAM", "कैश मेमोरी", "ROM", "रजिस्टर"], ans: 2 },
+        { q: "सबसे तेज गति वाली प्राथमिक आंतरिक मेमोरी कौन सी है?", options: ["हार्ड डिस्क", "कैश (Cache) मेमोरी", "ROM", "CD-ROM"], ans: 1 },
+        { q: "कम्प्यूटर में प्रयुक्त होने वाली 0 और 1 की भाषा को क्या कहते हैं?", options: ["उच्च स्तरीय भाषा", "बाइनरी / मशीन भाषा", "असेंबली भाषा", "अंग्रेजी भाषा"], ans: 1 },
+        { q: "1 बाइट (Byte) कितने बिट्स (Bits) के बराबर होता है?", options: ["4 बिट्स", "8 बिट्स", "16 बिट्स", "1024 बिट्स"], ans: 1 },
+        { q: "1 किलोबाइट (KB) में कितने बाइट होते हैं?", options: ["1000 बाइट", "1024 बाइट", "100 बाइट", "1024 मेगाबाइट"], ans: 1 },
+        { q: "1 मेगाबाइट (1 MB) में कितने किलोबाइट (KB) होते हैं?", options: ["1024 KB", "1000 KB", "100 KB", "512 KB"], ans: 0 },
+        { q: "1 गीगाबाइट (1 GB) बराबर होता है?", options: ["1024 KB", "1024 MB", "1024 TB", "1000 MB"], ans: 1 },
+        { q: "सॉफ्टवेयर का मुख्य उद्देश्य डेटा को किसमें बदलना होता है?", options: ["वेबसाइट", "सूचना (Information)", "प्रोग्राम", "ऑब्जेक्ट"], ans: 1 },
+        { q: "ऑपरेटिंग सिस्टम (OS) किस प्रकार के सॉफ्टवेयर का उदाहरण है?", options: ["एप्लिकेशन सॉफ्टवेयर", "सिस्टम सॉफ्टवेयर", "यूटिलिटी सॉफ्टवेयर", "ओपन सोर्स"], ans: 1 },
+        { q: "MS Word, MS Excel और Photoshop किस प्रकार के सॉफ्टवेयर हैं?", options: ["सिस्टम सॉफ्टवेयर", "एप्लिकेशन सॉफ्टवेयर", "हार्डवेयर", "फर्मवेयर"], ans: 1 },
+        { q: "सॉफ्टवेयरों का वह समूह जो कम्प्यूटर के संचालन को नियंत्रित करता है?", options: ["सिस्टम सॉफ्टवेयर", "एप्लिकेशन सॉफ्टवेयर", "यूटिलिटी", "वर्ड प्रोसेसर"], ans: 0 },
+        { q: "पास्कलाइन (Pascaline) नामक यांत्रिक कैलकुलेटर का आविष्कार किसने किया?", options: ["चार्ल्स बैबेज", "ब्लेज पास्कल", "हर्मन होलेरिथ", "जॉन नेपियर"], ans: 1 },
+        { q: "एनालिटिकल इंजन (Analytical Engine) का आविष्कार किसने किया था?", options: ["चार्ल्स बैबेज", "ब्लेज पास्कल", "अदा लवलेस", "जॉन न्यूमैन"], ans: 0 },
+        { q: "दुनिया की प्रथम प्रोग्रामर किसे माना जाता है?", options: ["लेडी अदा अगस्टा (Ada Lovelace)", "मैडम क्यूरी", "मदर टेरेसा", "ग्रेस हॉपर"], ans: 0 },
+        { q: "पंचकार्ड का प्रयोग सर्वप्रथम किसने किया था?", options: ["ब्लेज पास्कल", "हर्मन होलेरिथ", "चार्ल्स बैबेज", "जॉन नेपियर"], ans: 1 },
+        { q: "माइक्रो-कम्प्यूटर, मिनी-कम्प्यूटर, मेनफ्रेम और सुपर कम्प्यूटर किस आधार पर वर्गीकृत हैं?", options: ["कार्यप्रणाली", "आकार और क्षमता", "कीमत केवल", "ब्रांड"], ans: 1 },
+        { q: "सर्वाधिक शक्तिशाली एवं तेज गति वाले कम्प्यूटर कहलाते हैं?", options: ["माइक्रो कम्प्यूटर", "मिनी कम्प्यूटर", "सुपर कम्प्यूटर", "मेनफ्रेम कम्प्यूटर"], ans: 2 },
+        { q: "डेस्कटॉप, लैपटॉप और स्मार्टफोन किस श्रेणी के कम्प्यूटर हैं?", options: ["सुपर कम्प्यूटर", "मेनफ्रेम कम्प्यूटर", "माइक्रो कम्प्यूटर", "मिनी कम्प्यूटर"], ans: 2 },
+        { q: "डिजिटल कम्प्यूटर किस सिद्धांत पर कार्य करते हैं?", options: ["लगातार सिग्नल", "गणना (Ginti / Binary 0 and 1)", "तापमान", "दबाव"], ans: 1 },
+        { q: "एनालॉग एवं डिजिटल दोनों के सम्मिश्रण से बने कम्प्यूटर कहलाते हैं?", options: ["डिजिटल", "एनालॉग", "हाइब्रिड कम्प्यूटर (Hybrid Computer)", "सुपर कम्प्यूटर"], ans: 2 },
+        { q: "कम्प्यूटर की मुख्य विशेषताएँ हैं?", options: ["गति (Speed)", "सटीकता (Accuracy)", "विश्वसनीयता (Reliability)", "उपर्युक्त सभी"], ans: 3 },
+        { q: "सुपर कम्प्यूटर 'C-DAC' संस्था द्वारा कहाँ विकसित किया गया?", options: ["नई दिल्ली", "पुणे", "मुंबई", "बेंगलुरु"], ans: 1 },
+        { q: "सूचना प्रौद्योगिकी (IT) का मुख्य घटक क्या है?", options: ["कम्प्यूटर तकनीक", "संचार तकनीक", "डेटा एवं सूचना", "उपर्युक्त सभी"], ans: 3 },
+        { q: "बैंकों में चेक को जल्दी पढ़ने हेतु किस इनपुट डिवाइस का उपयोग होता है?", options: ["OMR", "MICR", "OCR", "Bar Code Reader"], ans: 1 },
+        { q: "प्रतियोगी परीक्षाओं की उत्तरपुस्तिकाएँ (OMR Sheet) जाँचने के लिए उपयोग होता है?", options: ["MICR", "OMR", "OCR", "स्कैनर"], ans: 1 }
+    ];
+
+    let currentStudent = {};
+
+    window.onload = function() {
+        checkExistingAttempt();
+    };
+
+    function checkExistingAttempt() {
+        const attempted = localStorage.getItem('rbse_it_ch1_attempted');
+        if (attempted === 'true') {
+            document.getElementById('studentFormCard').classList.add('hidden');
+            document.getElementById('quizSection').classList.add('hidden');
+            document.getElementById('lockCard').style.display = 'block';
+            
+            const savedStudent = JSON.parse(localStorage.getItem('rbse_it_ch1_last_student') || '{}');
+            if (savedStudent.id) {
+                document.getElementById('lockMessage').innerText = `Student ID: ${savedStudent.id} (${savedStudent.name}) द्वारा उत्तर पहले ही जमा किए जा चुके हैं।`;
+            }
+        }
+    }
+
+    function startTest() {
+        const sId = document.getElementById('studentId').value.trim();
+        const sName = document.getElementById('studentName').value.trim();
+
+        if (!sId || !sName) {
+            alert("कृपया Student ID और अपना नाम दोनों दर्ज करें!");
+            return;
+        }
+
+        currentStudent = { id: sId, name: sName };
+        document.getElementById('displayStudentId').innerText = sId;
+        document.getElementById('displayStudentName').innerText = sName;
+
+        document.getElementById('studentFormCard').classList.add('hidden');
+        document.getElementById('quizSection').classList.remove('hidden');
+
+        renderQuestions();
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+
+        questionsData.forEach((item, index) => {
+            const qBox = document.createElement('div');
+            qBox.className = 'question-item';
+            qBox.id = `qbox_${index}`;
+
+            let optionsHtml = '';
+            item.options.forEach((opt, oIndex) => {
+                optionsHtml += `
+                    <label>
+                        <input type="radio" name="q_${index}" value="${oIndex}">
+                        ${String.fromCharCode(65 + oIndex)}. ${opt}
+                    </label>
+                `;
+            });
+
+            qBox.innerHTML = `
+                <div class="question-title">प्रश्न ${index + 1}. ${item.q}</div>
+                <div class="options">${optionsHtml}</div>
+                <div class="answer-key" id="ans_key_${index}">
+                    <strong>सही उत्तर:</strong> ${String.fromCharCode(65 + item.ans)}. ${item.options[item.ans]}
+                </div>
+            `;
+            container.appendChild(qBox);
+        });
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let answeredCount = 0;
+
+        questionsData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+            if (selected) {
+                answeredCount++;
+                if (parseInt(selected.value) === item.ans) {
+                    score++;
+                }
+            }
+        });
+
+        if (answeredCount < questionsData.length) {
+            const confirmSubmit = confirm(`आपने केवल ${answeredCount} / ${questionsData.length} प्रश्नों के उत्तर दिए हैं। क्या आप निश्चित ही उत्तर जमा करना चाहते हैं?`);
+            if (!confirmSubmit) return;
+        }
+
+        // Save Result in localStorage
+        const resultRecord = {
+            id: currentStudent.id,
+            name: currentStudent.name,
+            score: score,
+            total: questionsData.length,
+            percent: ((score / questionsData.length) * 100).toFixed(1),
+            timestamp: new Date().toLocaleString('hi-IN')
+        };
+
+        let submissions = JSON.parse(localStorage.getItem('rbse_it_ch1_submissions') || '[]');
+        submissions.push(resultRecord);
+        localStorage.setItem('rbse_it_ch1_submissions', JSON.stringify(submissions));
+
+        // Lock Student attempt
+        localStorage.setItem('rbse_it_ch1_attempted', 'true');
+        localStorage.setItem('rbse_it_ch1_last_student', JSON.stringify(currentStudent));
+
+        document.getElementById('quizSection').classList.add('hidden');
+        document.getElementById('resultCard').style.display = 'block';
+    }
+
+    // Teacher Panel Logic
+    function openTeacherLogin() {
+        const pin = prompt("शिक्षक पोर्टल खोलने के लिए पासवर्ड (PIN) दर्ज करें:");
+        if (pin === "1234") {
+            document.getElementById('teacherPanel').style.display = 'block';
+            loadSubmissionsTable();
+            window.scrollTo(0, document.body.scrollHeight);
+        } else if (pin !== null) {
+            alert("गलत पिन (Wrong PIN)!");
+        }
+    }
+
+    function closeTeacherPanel() {
+        document.getElementById('teacherPanel').style.display = 'none';
+    }
+
+    function loadSubmissionsTable() {
+        const tbody = document.getElementById('submissionsTableBody');
+        const submissions = JSON.parse(localStorage.getItem('rbse_it_ch1_submissions') || '[]');
+
+        if (submissions.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">अभी तक कोई उत्तर जमा नहीं हुआ है।</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = '';
+        submissions.forEach(sub => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${sub.id}</strong></td>
+                <td>${sub.name}</td>
+                <td>${sub.score} / ${sub.total}</td>
+                <td>${sub.percent}%</td>
+                <td><small>${sub.timestamp}</small></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function toggleAnswerKeys() {
+        const quizVis = document.getElementById('quizSection').classList.contains('hidden');
+        if (quizVis) {
+            document.getElementById('quizSection').classList.remove('hidden');
+            document.getElementById('studentFormCard').classList.add('hidden');
+            document.getElementById('lockCard').style.display = 'none';
+            document.getElementById('resultCard').style.display = 'none';
+            if (!document.getElementById('questionsContainer').hasChildNodes()) {
+                renderQuestions();
+            }
+        }
+
+        const keys = document.querySelectorAll('.answer-key');
+        keys.forEach(k => {
+            k.style.display = (k.style.display === 'block') ? 'none' : 'block';
+        });
+    }
+
+    function clearAllData() {
+        const confirmClear = confirm("क्या आप सभी जमा रिकॉर्ड्स और छात्र लॉक हटाना चाहते हैं?");
+        if (confirmClear) {
+            localStorage.removeItem('rbse_it_ch1_attempted');
+            localStorage.removeItem('rbse_it_ch1_last_student');
+            localStorage.removeItem('rbse_it_ch1_submissions');
+            alert("समस्त डेटा री-सेट कर दिया गया है!");
+            location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>
